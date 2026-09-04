@@ -160,7 +160,7 @@ def page_shell(*, title, description, canonical, body, extra_head="", img_prefix
 
 
 def build_staff_index(key, s):
-    nav = nav_html("index.html", "../", s["name"]).replace("{instagram}", s["instagram"])
+    nav = nav_html("../index.html", "../", s["name"]).replace("{instagram}", s["instagram"])
 
     other_posts_html = f"""
         <a class="post-card" href="posts/{s['post_slug']}.html">
@@ -238,7 +238,7 @@ def build_staff_index(key, s):
 
 def build_post_page(key, s):
     post = POSTS[key]
-    nav = nav_html("../index.html", "../../", s["name"], anchor_prefix="../index.html").replace("{instagram}", s["instagram"])
+    nav = nav_html("../../index.html", "../../", s["name"], anchor_prefix="../index.html").replace("{instagram}", s["instagram"])
 
     body = f"""{nav}
 
