@@ -21,6 +21,9 @@ STAFF = {
         "role_label": "店長",
         "role_detail": "ハイトーン・メンズカット・パーマ特化",
         "monogram": "直",
+        "portrait_img": "takasu-portrait.jpg",
+        "thumb_img": "takasu-thumb.jpg",
+        "intro_short": "外国人風カラーとメンズカットが得意。骨格や肌色を見ながら、なりたいイメージをじっくり相談して決めます。",
         "bio": "店長をやっています。休日はライブやフェス巡りが趣味です。ハイトーンからナチュラルなグラデーションカラーまで、外国人風カラーを中心に担当しています。メンズカット・パーマも得意なので、気になる方は気軽に相談してください。骨格や肌色、なりたいイメージをしっかり聞いてから決めています。",
         "instagram": "https://www.instagram.com/tikesuu/",
         "hotpepper": "https://beauty.hotpepper.jp/slnH000505333/",
@@ -36,6 +39,9 @@ STAFF = {
         "role_label": "スタイリスト",
         "role_detail": "縮毛矯正・髪質改善特化",
         "monogram": "華",
+        "portrait_img": "kaori-portrait.jpg",
+        "thumb_img": "kaori-thumb.jpg",
+        "intro_short": "縮毛矯正と髪質改善が専門。くせやうねりのお悩みに合わせて、薬剤やアイロンの温度を都度調整します。",
         "bio": "縮毛矯正・髪質改善を専門にしています。くせやうねり、広がりに悩んでいる方は、一度相談してください。薬剤の選定からアイロンの温度まで、髪の状態を見ながらその都度調整しています。扱いやすくてまとまる髪、一緒に目指しましょう。",
         "instagram": "https://www.instagram.com/kaori___11o1/",
         "hotpepper": "https://beauty.hotpepper.jp/slnH000505333/",
@@ -51,6 +57,9 @@ STAFF = {
         "role_label": "美容師",
         "role_detail": "ヘアアレンジ・カラー特化",
         "monogram": "紗",
+        "portrait_img": "sasara-portrait.jpg",
+        "thumb_img": "sasara-thumb.jpg",
+        "intro_short": "ヘアアレンジとトレンドカラーが得意。お出かけ前や特別な日のアレンジも気軽に相談できます。",
         "bio": "ヘアアレンジとカラーを担当しています。丁寧な仕上がりを意識しながら、毎日練習を重ねています。お出かけ前や特別な日のヘアアレンジも、気軽に相談してください。",
         "instagram": "https://www.instagram.com/olino_sasa/",
         "hotpepper": "https://beauty.hotpepper.jp/slnH000505333/",
@@ -61,7 +70,21 @@ STAFF = {
     },
 }
 
-NAV_LINKS = [("スタイリスト", "#staff"), ("店舗情報", "#store"), ("ブログ", "#blog")]
+NAV_LINKS = [("スタイリスト", "#staff"), ("スタイル一覧", "styles.html"), ("店舗情報", "#store"), ("ブログ", "#blog")]
+
+LENGTH_ORDER = ["ショート", "ボブ", "ミディアム", "ロング", "ヘアアレンジ"]
+
+STYLE_PHOTOS = [
+    {"img": "takasu-bob-pink.jpg", "length": "ボブ", "label": "くすみピンクの外ハネボブ", "staff": "takasu"},
+    {"img": "takasu-short-undercut.jpg", "length": "ショート", "label": "刈り上げすっきりショート", "staff": "takasu"},
+    {"img": "takasu-long-straight.jpg", "length": "ロング", "label": "艶感まとまるロングストレート", "staff": "takasu"},
+    {"img": "kaori-medium-umbrella.jpg", "length": "ミディアム", "label": "アンブレラカラーのレイヤーミディアム", "staff": "kaori"},
+    {"img": "kaori-long-marron.jpg", "length": "ロング", "label": "秋色マロンブラウンの艶ストレート", "staff": "kaori"},
+    {"img": "kaori-long-greige.jpg", "length": "ロング", "label": "グレージュの柔らかウェーブロング", "staff": "kaori"},
+    {"img": "sasara-arrange-updo.jpg", "length": "ヘアアレンジ", "label": "夜会巻き風アップアレンジ", "staff": "sasara"},
+    {"img": "sasara-long-beige.jpg", "length": "ロング", "label": "ベージュカラーの巻き髪ロング", "staff": "sasara"},
+    {"img": "sasara-arrange-braid.jpg", "length": "ヘアアレンジ", "label": "リボン編みおろしアレンジ", "staff": "sasara"},
+]
 
 STORE_SECTION_TMPL = """
 <section class="wrap reveal" id="store">
@@ -110,8 +133,17 @@ def store_section(img_prefix):
     return STORE_SECTION_TMPL.format(img_prefix=img_prefix)
 
 
-def nav_html(index_href, img_prefix, brand_suffix="", anchor_prefix=""):
-    links = "\n      ".join(f'<a href="{anchor_prefix}{href}">{label}</a>' for label, href in NAV_LINKS)
+def nav_html(index_href, img_prefix, brand_suffix="", anchor_prefix="", hub_href=None, styles_href=None):
+    # 「スタイリスト」だけは常にハブ(トップページ)のスタイリスト一覧セクションへ飛ばす。
+    # 「スタイル一覧」は常にスタイルギャラリーページ(styles.html)へ飛ばす。
+    # 「店舗情報」「ブログ」はそのスタッフ自身のページ内セクションへ飛ばす(anchor_prefixに従う)。
+    overrides = {"スタイリスト": hub_href, "スタイル一覧": styles_href}
+
+    def link_href(label, href):
+        if overrides.get(label) is not None:
+            return overrides[label]
+        return f"{anchor_prefix}{href}"
+    links = "\n      ".join(f'<a href="{link_href(label, href)}">{label}</a>' for label, href in NAV_LINKS)
     suffix_html = f"<span>— {brand_suffix}</span>" if brand_suffix else ""
     return f"""<nav class="nav">
   <div class="nav-row">
@@ -160,7 +192,7 @@ def page_shell(*, title, description, canonical, body, extra_head="", img_prefix
 
 
 def build_staff_index(key, s):
-    nav = nav_html("../index.html", "../", s["name"]).replace("{instagram}", s["instagram"])
+    nav = nav_html("../index.html", "../", s["name"], hub_href="../index.html#staff", styles_href="../styles.html").replace("{instagram}", s["instagram"])
 
     other_posts_html = f"""
         <a class="post-card" href="posts/{s['post_slug']}.html">
@@ -190,7 +222,7 @@ def build_staff_index(key, s):
     </div>
   </div>
   <div class="portrait">
-    <span class="monogram">{s['monogram']}</span>
+    <img src="../assets/img/{s['portrait_img']}" alt="olino {s['name']}（{s['role_label']}）のプロフィール写真" loading="eager" width="932" height="1400">
     <div class="portrait-tag"><span>OLINO / 東住吉区</span><span>{s['portrait_tag']}</span></div>
   </div>
 </header>
@@ -238,7 +270,7 @@ def build_staff_index(key, s):
 
 def build_post_page(key, s):
     post = POSTS[key]
-    nav = nav_html("../../index.html", "../../", s["name"], anchor_prefix="../index.html").replace("{instagram}", s["instagram"])
+    nav = nav_html("../../index.html", "../../", s["name"], anchor_prefix="../index.html", hub_href="../../index.html#staff", styles_href="../../styles.html").replace("{instagram}", s["instagram"])
 
     body = f"""{nav}
 
@@ -287,9 +319,10 @@ def build_hub_index():
     for key, s in STAFF.items():
         cards.append(f"""
     <a class="staff-card" href="{s['dir']}/index.html">
-      <div class="monogram">{s['monogram']}</div>
+      <div class="staff-card-photo"><img src="assets/img/{s['thumb_img']}" alt="olino {s['name']}（{s['role_label']}）のプロフィール写真" loading="lazy" width="333" height="500"></div>
       <h3>{s['name']}</h3>
       <p>{s['role_label']} / {s['role_detail']}</p>
+      <p class="staff-card-intro">{s['intro_short']}</p>
     </a>""".strip("\n"))
     cards_html = "\n    ".join(cards)
 
@@ -298,6 +331,7 @@ def build_hub_index():
     <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.png" alt="olino"></a>
     <div class="nav-links">
       <a href="#staff">スタイリスト一覧</a>
+      <a href="styles.html">スタイル一覧</a>
       <a href="#store">店舗情報</a>
     </div>
     <a class="nav-cta" href="https://beauty.hotpepper.jp/slnH000505333/" target="_blank" rel="noopener">HotPepperで予約</a>
@@ -346,6 +380,85 @@ def build_hub_index():
     print("wrote", out_path)
 
 
+def build_styles_page():
+    by_length = {length: [] for length in LENGTH_ORDER}
+    for photo in STYLE_PHOTOS:
+        by_length.setdefault(photo["length"], []).append(photo)
+
+    eyebrow_en = {"ショート": "SHORT", "ボブ": "BOB", "ミディアム": "MEDIUM", "ロング": "LONG", "ヘアアレンジ": "HAIR ARRANGE"}
+
+    sections = []
+    for length in LENGTH_ORDER:
+        photos = by_length.get(length, [])
+        if not photos:
+            continue
+        cards = []
+        for p in photos:
+            s = STAFF[p["staff"]]
+            cards.append(f"""
+      <a class="style-card" href="{s['dir']}/index.html">
+        <div class="style-card-photo"><img src="assets/img/styles/{p['img']}" alt="{p['label']}（担当: {s['name']}）" loading="lazy" width="750" height="1000"></div>
+        <div class="style-card-body">
+          <span class="post-tag">{length}</span>
+          <h3>{p['label']}</h3>
+          <p>{s['name']} / {s['role_label']}</p>
+        </div>
+      </a>""".strip("\n"))
+        cards_html = "\n      ".join(cards)
+        sections.append(f"""
+<section class="wrap reveal" id="length-{length}">
+  <div class="section-head">
+    <span class="eyebrow">{eyebrow_en.get(length, length)}</span>
+    <h2>{length}のスタイル</h2>
+  </div>
+  <div class="style-grid">
+    {cards_html}
+  </div>
+</section>""".strip("\n"))
+    sections_html = "\n\n".join(sections)
+
+    length_nav = " / ".join(f'<a href="#length-{length}">{length}</a>' for length in LENGTH_ORDER if by_length.get(length))
+
+    body = f"""<nav class="nav">
+  <div class="nav-row">
+    <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.png" alt="olino"></a>
+    <div class="nav-links">
+      <a href="index.html#staff">スタイリスト一覧</a>
+      <a href="styles.html">スタイル一覧</a>
+      <a href="index.html#store">店舗情報</a>
+    </div>
+    <a class="nav-cta" href="https://beauty.hotpepper.jp/slnH000505333/" target="_blank" rel="noopener">HotPepperで予約</a>
+  </div>
+</nav>
+
+<div id="top"></div>
+
+<header class="wrap hub-hero">
+  <span class="eyebrow">STYLE GALLERY</span>
+  <h1>スタイルギャラリー</h1>
+  <p>olinoのスタイリストが実際に手がけたスタイルを、レングス別にまとめました。気になるスタイルがあれば、担当スタイリストのページから予約できます。</p>
+  <p class="note">{length_nav}</p>
+</header>
+
+{sections_html}
+
+{footer_html("olino")}"""
+
+    title = "スタイルギャラリー（レングス別）| 美容室olino（大阪市東住吉区・南田辺）"
+    description = "美容室olinoのスタイリストが手がけたヘアスタイルを、ショート・ボブ・ミディアム・ロング・ヘアアレンジなどレングス別にまとめたスタイルギャラリーです。"
+    html = page_shell(
+        title=title,
+        description=description,
+        canonical=f"{SITE_URL}/styles.html",
+        body=body,
+        extra_head='<link rel="stylesheet" href="assets/style.css">\n',
+    )
+    out_path = os.path.join(ROOT, "styles.html")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print("wrote", out_path)
+
+
 def build_robots_and_sitemap():
     robots = f"""User-agent: *
 Allow: /
@@ -355,7 +468,7 @@ Sitemap: {SITE_URL}/sitemap.xml
     with open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(robots)
 
-    urls = [f"{SITE_URL}/"]
+    urls = [f"{SITE_URL}/", f"{SITE_URL}/styles.html"]
     for key, s in STAFF.items():
         urls.append(f"{SITE_URL}/{s['dir']}/")
         urls.append(f"{SITE_URL}/{s['dir']}/posts/{s['post_slug']}.html")
@@ -383,5 +496,6 @@ if __name__ == "__main__":
         build_staff_index(key, s)
         build_post_page(key, s)
     build_hub_index()
+    build_styles_page()
     build_robots_and_sitemap()
     print("DONE")

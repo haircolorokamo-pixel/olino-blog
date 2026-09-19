@@ -61,9 +61,12 @@ h1.name{font-family:"Shippori Mincho",serif;font-weight:800;font-size:clamp(2.3r
 .portrait{aspect-ratio:1/1.06;border-radius:28px;
   background:radial-gradient(120% 120% at 20% 15%, var(--gold-soft), transparent 60%),linear-gradient(160deg, var(--card), var(--paper));
   border:1px solid var(--line);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:var(--shadow);}
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:0;}
+.portrait::after{content:"";position:absolute;inset:auto 0 0 0;height:42%;
+  background:linear-gradient(180deg, transparent, rgba(20,14,10,0.68));pointer-events:none;z-index:1;}
 .monogram{font-family:"Shippori Mincho",serif;font-weight:700;font-size:clamp(4rem,11vw,6.4rem);color:var(--gold-deep);position:relative;z-index:1;}
 .portrait-tag{position:absolute;bottom:18px;left:18px;right:18px;display:flex;justify-content:space-between;
-  font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;}
+  font-size:0.72rem;color:#f4ece0;letter-spacing:0.08em;z-index:2;}
 
 .hero-photo{aspect-ratio:1/1.06;border-radius:28px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);margin:0;}
 .hero-photo img{width:100%;height:100%;object-fit:cover;}
@@ -131,8 +134,23 @@ footer{border-top:1px solid var(--line);padding:32px 0 48px;}
 .hub-hero h1{font-family:"Shippori Mincho",serif;font-size:clamp(2rem,5vw,2.8rem);margin:0 0 14px;}
 .hub-hero p{color:var(--muted);max-width:52ch;margin:0 auto;}
 .staff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:40px;}
-.staff-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 24px;
+.staff-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 24px 28px;
   text-align:center;text-decoration:none;color:inherit;}
-.staff-card .monogram{font-size:3rem;margin-bottom:10px;}
+.staff-card-photo{aspect-ratio:3/4;border-radius:16px;overflow:hidden;margin:0 0 18px;border:1px solid var(--line);}
+.staff-card-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
 .staff-card h3{font-family:"Shippori Mincho",serif;margin:8px 0 4px;font-size:1.2rem;}
 .staff-card p{color:var(--muted);font-size:0.85rem;margin:0;}
+.staff-card-intro{margin-top:10px;line-height:1.7;text-align:left;}
+
+.hub-hero .note{margin-top:20px;font-size:0.86rem;}
+.hub-hero .note a{color:var(--gold-deep);text-decoration:none;font-weight:700;}
+.hub-hero .note a:hover{text-decoration:underline;}
+
+.style-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:20px;}
+.style-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  display:flex;flex-direction:column;text-decoration:none;color:inherit;}
+.style-card-photo{aspect-ratio:3/4;overflow:hidden;}
+.style-card-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.style-card-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:6px;}
+.style-card-body h3{margin:2px 0 0;font-size:0.96rem;font-weight:700;line-height:1.5;}
+.style-card-body p{margin:0;color:var(--muted);font-size:0.82rem;}
