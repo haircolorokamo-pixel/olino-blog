@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://haircolorokamo-pixel.github.io/olino-blog/sitemap.xml
