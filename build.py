@@ -5,13 +5,80 @@ olino 新サイト ビルドスクリプト
 _extracted.json の記事データ + STAFF 情報から、静的HTMLサイト一式を生成する。
 GitHub Pages にそのまま置けば動く(ビルドツール不要・全部素のHTML)。
 """
-import json, os, re
+import json, os, re, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE_URL = "https://haircolorokamo-pixel.github.io/olino-blog"
 
 with open(os.path.join(ROOT, "_extracted.json"), encoding="utf-8") as f:
     POSTS = json.load(f)
+
+# 復旧用データ(2026-09-19: LINE経由でCode.gs側が直接GitHubへ公開したブログ記事が、
+# このスクリプトによる全体再ビルド時にstaffのindex.html/sitemap.xmlを丸ごと上書きしてしまい、
+# 一覧・サイトマップから見えなくなっていた分)。下のfetch_live_html()によるライブ取得と
+# 突き合わせて、まだ反映されていないものだけ差し込む。記事ページ自体は元々消えていない。
+RECOVERED_POSTS_PATH = os.path.join(ROOT, "recovered_posts.json")
+if os.path.exists(RECOVERED_POSTS_PATH):
+    with open(RECOVERED_POSTS_PATH, encoding="utf-8") as f:
+        RECOVERED_POSTS = json.load(f)
+else:
+    RECOVERED_POSTS = []
+
+
+def fetch_live_html(url, timeout=15):
+    """本番サイトの現在のHTMLを取得する(失敗時はNoneを返す)。
+    これにより、テンプレート更新の再ビルドがCode.gs側で追加された既存のブログ記事や
+    サイトマップURLを上書き消去してしまう事故を防ぐ(2026-09-19に一度発生した)。"""
+    try:
+        result = subprocess.run(
+            ["curl", "-s", "-w", "\n__HTTP_STATUS__:%{http_code}", url],
+            capture_output=True, text=True, timeout=timeout
+        )
+        out = result.stdout
+        marker = "\n__HTTP_STATUS__:"
+        idx = out.rfind(marker)
+        if idx == -1:
+            return None
+        body, status = out[:idx], out[idx + len(marker):].strip()
+        if status != "200" or not body:
+            return None
+        return body
+    except Exception as e:
+        print("fetch_live_html failed for", url, ":", e)
+        return None
+
+
+def extract_balanced_div(html, marker):
+    """htmlの中からmarker(例: '<div class="blog-list">')を探し、対応する閉じタグまでの
+    「中身」だけを返す(ネストしたdivを正しく数える)。見つからなければNone。"""
+    idx = html.find(marker)
+    if idx == -1:
+        return None
+    pos = idx + len(marker)
+    depth = 1
+    for m in re.finditer(r"<div\b[^>]*>|</div>", html[pos:]):
+        if m.group().startswith("</div"):
+            depth -= 1
+        else:
+            depth += 1
+        if depth == 0:
+            return html[pos: pos + m.start()]
+    return None
+
+
+def build_post_card_html(post, dir_, slug):
+    """スタッフindex.htmlのブログ一覧に挿入する記事カードHTML(Code.gs側buildPostCardHtml_と同一構造)。"""
+    return (
+        f'<a class="post-card" href="posts/{slug}.html">\n'
+        f'          <div class="thumb"><img src="posts/img/{slug}.jpg" alt="{post["title"]}" loading="lazy"></div>\n'
+        f'          <div class="card-body">\n'
+        f'            <div class="post-meta"><span class="post-date">{post["date"]}</span><span class="post-tag">{post["tag"]}</span></div>\n'
+        f'            <h3>{post["title"]}</h3>\n'
+        f'            <p class="excerpt">{post["excerpt"]}</p>\n'
+        f'            <span class="read-more">続きを読む →</span>\n'
+        f'          </div>\n'
+        f'        </a>'
+    )
 
 STAFF = {
     "takasu": {
@@ -73,6 +140,22 @@ STAFF = {
 NAV_LINKS = [("スタイリスト", "#staff"), ("スタイル一覧", "styles.html"), ("店舗情報", "#store"), ("ブログ", "#blog")]
 
 LENGTH_ORDER = ["ショート", "ボブ", "ミディアム", "ロング", "ヘアアレンジ"]
+
+LENGTH_SLUGS = {
+    "ショート": "short",
+    "ボブ": "bob",
+    "ミディアム": "medium",
+    "ロング": "long",
+    "ヘアアレンジ": "arrange",
+}
+
+LENGTH_EYEBROW_EN = {
+    "ショート": "SHORT",
+    "ボブ": "BOB",
+    "ミディアム": "MEDIUM",
+    "ロング": "LONG",
+    "ヘアアレンジ": "HAIR ARRANGE",
+}
 
 STYLE_PHOTOS = [
     {"img": "takasu-bob-pink.jpg", "length": "ボブ", "label": "くすみピンクの外ハネボブ", "staff": "takasu"},
@@ -156,6 +239,21 @@ def nav_html(index_href, img_prefix, brand_suffix="", anchor_prefix="", hub_href
 </nav>"""
 
 
+def top_level_nav_html():
+    # ハブ配下のトップレベルページ(index.html, styles.html, styles-*.html)共通のナビ。
+    return """<nav class="nav">
+  <div class="nav-row">
+    <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.png" alt="olino"></a>
+    <div class="nav-links">
+      <a href="index.html#staff">スタイリスト一覧</a>
+      <a href="styles.html">スタイル一覧</a>
+      <a href="index.html#store">店舗情報</a>
+    </div>
+    <a class="nav-cta" href="https://beauty.hotpepper.jp/slnH000505333/" target="_blank" rel="noopener">HotPepperで予約</a>
+  </div>
+</nav>"""
+
+
 def footer_html(person_line):
     return f"""<footer>
   <div class="wrap foot-row">
@@ -191,20 +289,52 @@ def page_shell(*, title, description, canonical, body, extra_head="", img_prefix
 """
 
 
+def build_blog_list_html(key, s):
+    """このスタッフのblog-list中身HTMLを組み立てる。
+    本番サイトに今すでにある記事一覧(Code.gs側がLINE経由で直接GitHubへ追加したものを含む)を
+    ライブ取得し、それを土台にする。取得できた場合、まだ反映されていない復旧データ
+    (RECOVERED_POSTS)のうち新しいものだけを先頭に差し込む。ライブ取得に失敗した場合のみ、
+    従来通り最初の1記事だけのフォールバックにする。"""
+    original_card = (
+        f'<a class="post-card" href="posts/{s["post_slug"]}.html">\n'
+        f'          <div class="thumb"><img src="../assets/img/{s["post_img"]}" alt="{POSTS[key]["title"]}" loading="lazy" width="800" height="1000"></div>\n'
+        f'          <div class="card-body">\n'
+        f'            <div class="post-meta"><span class="post-date">{POSTS[key]["date"]}</span><span class="post-tag">{POSTS[key]["tag"]}</span></div>\n'
+        f'            <h3>{POSTS[key]["title"]}</h3>\n'
+        f'            <p class="excerpt">{POSTS[key]["excerpt"]}</p>\n'
+        f'            <span class="read-more">続きを読む →</span>\n'
+        f'          </div>\n'
+        f'        </a>'
+    )
+
+    live_html = fetch_live_html(f"{SITE_URL}/{s['dir']}/index.html")
+    existing_inner = extract_balanced_div(live_html, '<div class="blog-list">') if live_html else None
+
+    if existing_inner is None:
+        print(f"[warn] {s['dir']}: 本番のblog-listを取得できなかったため、静的な1記事のみで生成します。")
+        return other_posts_html_fallback(original_card)
+
+    existing_slugs = set(re.findall(r'posts/([^"]+?)\.html', existing_inner))
+
+    recovered_for_staff = [p for p in RECOVERED_POSTS if p["dir"] == s["dir"] and p["slug"] not in existing_slugs]
+    recovered_for_staff.reverse()  # 日付昇順で保存されているので、新しい記事が上に来るよう反転する
+    if recovered_for_staff:
+        print(f"[recover] {s['dir']}: 本番に未反映の記事を{len(recovered_for_staff)}件差し込みます。")
+
+    new_cards = "\n        ".join(build_post_card_html(p, p["dir"], p["slug"]) for p in recovered_for_staff)
+    if new_cards:
+        return new_cards + "\n        " + existing_inner.strip()
+    return existing_inner.strip()
+
+
+def other_posts_html_fallback(original_card):
+    return original_card
+
+
 def build_staff_index(key, s):
     nav = nav_html("../index.html", "../", s["name"], hub_href="../index.html#staff", styles_href="../styles.html").replace("{instagram}", s["instagram"])
 
-    other_posts_html = f"""
-        <a class="post-card" href="posts/{s['post_slug']}.html">
-          <div class="thumb"><img src="../assets/img/{s['post_img']}" alt="{POSTS[key]['title']}" loading="lazy" width="800" height="1000"></div>
-          <div class="card-body">
-            <div class="post-meta"><span class="post-date">{POSTS[key]['date']}</span><span class="post-tag">{POSTS[key]['tag']}</span></div>
-            <h3>{POSTS[key]['title']}</h3>
-            <p class="excerpt">{POSTS[key]['excerpt']}</p>
-            <span class="read-more">続きを読む →</span>
-          </div>
-        </a>
-    """.strip("\n")
+    other_posts_html = build_blog_list_html(key, s)
 
     body = f"""{nav}
 
@@ -326,17 +456,7 @@ def build_hub_index():
     </a>""".strip("\n"))
     cards_html = "\n    ".join(cards)
 
-    body = f"""<nav class="nav">
-  <div class="nav-row">
-    <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.png" alt="olino"></a>
-    <div class="nav-links">
-      <a href="#staff">スタイリスト一覧</a>
-      <a href="styles.html">スタイル一覧</a>
-      <a href="#store">店舗情報</a>
-    </div>
-    <a class="nav-cta" href="https://beauty.hotpepper.jp/slnH000505333/" target="_blank" rel="noopener">HotPepperで予約</a>
-  </div>
-</nav>
+    body = f"""{top_level_nav_html()}
 
 <div id="top"></div>
 
@@ -380,56 +500,37 @@ def build_hub_index():
     print("wrote", out_path)
 
 
-def build_styles_page():
+def _styles_by_length():
     by_length = {length: [] for length in LENGTH_ORDER}
     for photo in STYLE_PHOTOS:
         by_length.setdefault(photo["length"], []).append(photo)
+    return by_length
 
-    eyebrow_en = {"ショート": "SHORT", "ボブ": "BOB", "ミディアム": "MEDIUM", "ロング": "LONG", "ヘアアレンジ": "HAIR ARRANGE"}
 
-    sections = []
+def build_styles_index():
+    # スタイル一覧のハブページ。レングスごとの5ページへのリンクカードのみを持つ軽量なページ。
+    # 件数が増えても(将来1000件規模になっても)このページ自体は重くならない。
+    by_length = _styles_by_length()
+
+    cards = []
     for length in LENGTH_ORDER:
         photos = by_length.get(length, [])
         if not photos:
             continue
-        cards = []
-        for p in photos:
-            s = STAFF[p["staff"]]
-            cards.append(f"""
-      <a class="style-card" href="{s['dir']}/index.html">
-        <div class="style-card-photo"><img src="assets/img/styles/{p['img']}" alt="{p['label']}（担当: {s['name']}）" loading="lazy" width="750" height="1000"></div>
-        <div class="style-card-body">
-          <span class="post-tag">{length}</span>
-          <h3>{p['label']}</h3>
-          <p>{s['name']} / {s['role_label']}</p>
-        </div>
-      </a>""".strip("\n"))
-        cards_html = "\n      ".join(cards)
-        sections.append(f"""
-<section class="wrap reveal" id="length-{length}">
-  <div class="section-head">
-    <span class="eyebrow">{eyebrow_en.get(length, length)}</span>
-    <h2>{length}のスタイル</h2>
-  </div>
-  <div class="style-grid">
-    {cards_html}
-  </div>
-</section>""".strip("\n"))
-    sections_html = "\n\n".join(sections)
+        rep = photos[0]  # 代表写真(先頭の1枚)をサムネイルに使う
+        s = STAFF[rep["staff"]]
+        slug = LENGTH_SLUGS[length]
+        cards.append(f"""
+    <a class="length-card" href="styles-{slug}.html">
+      <div class="length-card-photo"><img src="assets/img/styles/{rep['img']}" alt="{length}のスタイル例（担当: {s['name']}）" loading="lazy" width="750" height="1000"></div>
+      <div class="length-card-body">
+        <h3>{length}</h3>
+        <p>{len(photos)}件のスタイルを見る →</p>
+      </div>
+    </a>""".strip("\n"))
+    cards_html = "\n    ".join(cards)
 
-    length_nav = " / ".join(f'<a href="#length-{length}">{length}</a>' for length in LENGTH_ORDER if by_length.get(length))
-
-    body = f"""<nav class="nav">
-  <div class="nav-row">
-    <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.png" alt="olino"></a>
-    <div class="nav-links">
-      <a href="index.html#staff">スタイリスト一覧</a>
-      <a href="styles.html">スタイル一覧</a>
-      <a href="index.html#store">店舗情報</a>
-    </div>
-    <a class="nav-cta" href="https://beauty.hotpepper.jp/slnH000505333/" target="_blank" rel="noopener">HotPepperで予約</a>
-  </div>
-</nav>
+    body = f"""{top_level_nav_html()}
 
 <div id="top"></div>
 
@@ -437,10 +538,13 @@ def build_styles_page():
   <span class="eyebrow">STYLE GALLERY</span>
   <h1>スタイルギャラリー</h1>
   <p>olinoのスタイリストが実際に手がけたスタイルを、レングス別にまとめました。気になるスタイルがあれば、担当スタイリストのページから予約できます。</p>
-  <p class="note">{length_nav}</p>
 </header>
 
-{sections_html}
+<section class="wrap" style="padding-top:0;">
+  <div class="length-grid">
+    {cards_html}
+  </div>
+</section>
 
 {footer_html("olino")}"""
 
@@ -459,6 +563,73 @@ def build_styles_page():
     print("wrote", out_path)
 
 
+def build_style_length_page(length):
+    # レングスごとの個別ページ。ここに新しいスタイルが日々自動追加されていく想定
+    # (Code.gs 側が <div class="style-grid"> の直後にカードを差し込む)。
+    by_length = _styles_by_length()
+    photos = by_length.get(length, [])
+    slug = LENGTH_SLUGS[length]
+
+    cards = []
+    for p in photos:
+        s = STAFF[p["staff"]]
+        cards.append(f"""
+    <a class="style-card" href="{s['dir']}/index.html">
+      <div class="style-card-photo"><img src="assets/img/styles/{p['img']}" alt="{p['label']}（担当: {s['name']}）" loading="lazy" width="750" height="1000"></div>
+      <div class="style-card-body">
+        <span class="post-tag">{length}</span>
+        <h3>{p['label']}</h3>
+        <p>{s['name']} / {s['role_label']}</p>
+      </div>
+    </a>""".strip("\n"))
+    cards_html = "\n    ".join(cards) if cards else ''
+
+    if cards:
+        grid_html = f"""<div class="style-grid">
+    {cards_html}
+  </div>"""
+    else:
+        grid_html = """<div class="style-grid">
+    <p class="empty-state">準備中です。近日公開予定です。</p>
+  </div>"""
+
+    length_tabs = " / ".join(
+        (f'<strong>{l}</strong>' if l == length else f'<a href="styles-{LENGTH_SLUGS[l]}.html">{l}</a>')
+        for l in LENGTH_ORDER if by_length.get(l) or l == length
+    )
+
+    body = f"""{top_level_nav_html()}
+
+<div id="top"></div>
+
+<header class="wrap hub-hero">
+  <span class="eyebrow">{LENGTH_EYEBROW_EN.get(length, length)}</span>
+  <h1>{length}のスタイル</h1>
+  <p>olinoのスタイリストが実際に手がけた{length}のスタイル集です。気になるスタイルがあれば、担当スタイリストのページから予約できます。</p>
+  <p class="note"><a href="styles.html">← スタイルギャラリー一覧に戻る</a>　|　{length_tabs}</p>
+</header>
+
+<section class="wrap reveal" style="padding-top:0;">
+  {grid_html}
+</section>
+
+{footer_html("olino")}"""
+
+    title = f"{length}のスタイル一覧 | 美容室olino（大阪市東住吉区・南田辺）"
+    description = f"美容室olinoのスタイリストが手がけた{length}のヘアスタイル一覧です。気に入ったスタイルがあれば担当スタイリストにそのままご相談・ご予約いただけます。"
+    html = page_shell(
+        title=title,
+        description=description,
+        canonical=f"{SITE_URL}/styles-{slug}.html",
+        body=body,
+        extra_head='<link rel="stylesheet" href="assets/style.css">\n',
+    )
+    out_path = os.path.join(ROOT, f"styles-{slug}.html")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print("wrote", out_path)
+
+
 def build_robots_and_sitemap():
     robots = f"""User-agent: *
 Allow: /
@@ -469,9 +640,31 @@ Sitemap: {SITE_URL}/sitemap.xml
         f.write(robots)
 
     urls = [f"{SITE_URL}/", f"{SITE_URL}/styles.html"]
+    for length in LENGTH_ORDER:
+        urls.append(f"{SITE_URL}/styles-{LENGTH_SLUGS[length]}.html")
     for key, s in STAFF.items():
         urls.append(f"{SITE_URL}/{s['dir']}/")
         urls.append(f"{SITE_URL}/{s['dir']}/posts/{s['post_slug']}.html")
+    for p in RECOVERED_POSTS:
+        urls.append(f"{SITE_URL}/{p['dir']}/posts/{p['slug']}.html")
+
+    # 本番のsitemap.xmlに今すでにあるURL(Code.gs側が記事公開のたびに追加したものを含む)を
+    # ライブ取得して合流させる。これをしないと、テンプレート更新の再ビルドのたびに
+    # 既存記事のURLがsitemapから消えてしまう(2026-09-19に一度発生した事故と同じ原因)。
+    live_sitemap = fetch_live_html(f"{SITE_URL}/sitemap.xml")
+    if live_sitemap:
+        live_urls = re.findall(r"<loc>([^<]+)</loc>", live_sitemap)
+        added = 0
+        seen = set(urls)
+        for u in live_urls:
+            if u not in seen:
+                urls.append(u)
+                seen.add(u)
+                added += 1
+        if added:
+            print(f"[recover] sitemap.xml: 本番から{added}件のURLを合流させました。")
+    else:
+        print("[warn] sitemap.xml: 本番のsitemapを取得できなかったため、静的なURLのみで生成します。")
 
     entries = "\n".join(
         f"  <url><loc>{u}</loc></url>" for u in urls
@@ -496,6 +689,8 @@ if __name__ == "__main__":
         build_staff_index(key, s)
         build_post_page(key, s)
     build_hub_index()
-    build_styles_page()
+    build_styles_index()
+    for length in LENGTH_ORDER:
+        build_style_length_page(length)
     build_robots_and_sitemap()
     print("DONE")
