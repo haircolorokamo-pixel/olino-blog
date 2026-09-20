@@ -231,6 +231,8 @@ def nav_html(index_href, img_prefix, brand_suffix="", anchor_prefix="", hub_href
     return f"""<nav class="nav">
   <div class="nav-row">
     <a class="brand" href="{index_href}"><img class="brand-logo" src="{img_prefix}assets/img/logo.png" alt="olino">{suffix_html}</a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-btn" aria-label="メニューを開く">&#9776;</label>
     <div class="nav-links">
       {links}
     </div>
@@ -244,6 +246,8 @@ def top_level_nav_html():
     return """<nav class="nav">
   <div class="nav-row">
     <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.png" alt="olino"></a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-btn" aria-label="メニューを開く">&#9776;</label>
     <div class="nav-links">
       <a href="index.html#staff">スタイリスト一覧</a>
       <a href="styles.html">スタイル一覧</a>
