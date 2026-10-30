@@ -14,137 +14,227 @@
 <meta property="og:image" content="https://haircolorokamo-pixel.github.io/olino-blog/assets/img/store-exterior.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--h-bg:#f7f4ed;--h-bg-alt:#efeadf;--h-ink:#221f1a;--h-muted:#716a5c;--h-line:#dcd4c3;--h-accent:#9c7a3c;}
+@media (prefers-color-scheme: dark){:root{--h-bg:#1b1916;--h-bg-alt:#242019;--h-ink:#f1ece0;--h-muted:#b7ae9b;--h-line:#3a352b;--h-accent:#c9a35f;}}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--h-bg);color:var(--h-ink);font-family:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+body img{max-width:100%;display:block;}
+body a{text-decoration:none;color:inherit;}
+body h1,body h2,body h3{font-family:"Shippori Mincho",serif;font-weight:700;margin:0;}
+.h-gutter{padding-left:max(20px, env(safe-area-inset-left,0px));padding-right:max(20px, env(safe-area-inset-right,0px));}
+.h-wrap{max-width:1180px;margin:0 auto;}
+.h-eyebrow{display:inline-block;font-size:.72rem;letter-spacing:.22em;color:var(--h-accent);font-weight:600;}
+.h-nav{background:var(--h-bg);border-bottom:1px solid var(--h-line);position:sticky;top:0;z-index:20;}
+.h-nav-row{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:18px;flex-wrap:wrap;}
+.h-brand{display:flex;align-items:center;gap:10px;}
+.h-brand img{height:28px;width:auto;}
+.h-brand span{font-family:"Shippori Mincho",serif;font-size:1.2rem;letter-spacing:.12em;font-weight:600;}
+.h-nav-links{display:flex;gap:22px;flex-wrap:wrap;list-style:none;margin:0;padding:0;}
+.h-nav-links a{font-size:.8rem;letter-spacing:.06em;}
+.h-nav-links a::before{content:"− ";color:var(--h-muted);}
+.h-nav-links a:hover{color:var(--h-accent);}
+.h-nav-cta{font-size:.76rem;letter-spacing:.05em;border:1px solid var(--h-ink);padding:8px 16px;white-space:nowrap;}
+.h-nav-cta:hover{background:var(--h-ink);color:var(--h-bg);}
+.h-hero{position:relative;}
+.h-hero-media{width:100%;aspect-ratio:16/10;object-fit:cover;}
+.h-hero-scrim{position:absolute;inset:0;background:linear-gradient(to top, rgba(10,9,6,.72) 0%, rgba(10,9,6,.18) 42%, rgba(10,9,6,0) 68%);}
+.h-hero-copy{position:absolute;left:0;right:0;bottom:0;padding:44px 0 36px;color:#f6f1e4;}
+.h-hero-copy .h-eyebrow{color:#e7cf9b;}
+.h-hero-copy h1{color:#faf7ee;font-size:clamp(1.5rem, 4.4vw, 3rem);line-height:1.38;margin-top:12px;}
+section.h-gutter{padding-block:76px;}
+.h-section-head{display:flex;align-items:baseline;gap:18px;margin-bottom:44px;}
+.h-section-num{font-family:"Shippori Mincho",serif;font-size:.95rem;color:var(--h-muted);letter-spacing:.08em;}
+.h-section-head h2{font-size:1.4rem;letter-spacing:.04em;}
+.h-about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center;}
+.h-about-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;}
+.h-about-text p{color:var(--h-muted);line-height:2;font-size:.96rem;margin:0 0 18px;}
+.h-about-text .h-lead{font-family:"Shippori Mincho",serif;color:var(--h-ink);font-size:1.12rem;line-height:1.9;margin-bottom:22px;}
+.h-bg-alt{background:var(--h-bg-alt);}
+.h-staff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,3vw,36px);}
+.h-staff-grid .photo img{width:100%;aspect-ratio:3/4;object-fit:cover;}
+.h-staff-grid .staff-num{font-family:"Shippori Mincho",serif;color:var(--h-accent);font-size:clamp(.6rem,1.8vw,.76rem);letter-spacing:.06em;display:block;margin-top:12px;}
+.h-staff-grid .staff-name{font-size:clamp(.95rem,3.2vw,1.4rem);margin:4px 0 3px;line-height:1.25;}
+.h-staff-grid .staff-tag{color:var(--h-muted);font-size:clamp(.64rem,2vw,.8rem);letter-spacing:.02em;margin:0;}
+.h-staff-grid .staff-link{display:inline-block;margin-top:10px;font-size:clamp(.62rem,1.8vw,.75rem);letter-spacing:.05em;border-bottom:1px solid var(--h-ink);padding-bottom:1px;}
+.h-staff-grid a.staff-card:hover .staff-link{color:var(--h-accent);border-color:var(--h-accent);}
+.h-blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+.h-blog-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;margin-bottom:14px;}
+.h-blog-meta{display:flex;gap:10px;align-items:baseline;font-size:.7rem;color:var(--h-muted);letter-spacing:.02em;margin-bottom:6px;}
+.h-blog-meta .staff-chip{color:var(--h-accent);}
+.h-blog-title{font-size:.92rem;line-height:1.6;color:var(--h-ink);}
+.h-blog-more{display:inline-block;margin-top:34px;font-size:.78rem;letter-spacing:.06em;border-bottom:1px solid var(--h-ink);padding-bottom:1px;}
+.h-blog-more:hover{color:var(--h-accent);border-color:var(--h-accent);}
+.h-voice-top{display:flex;align-items:baseline;gap:14px;margin-bottom:38px;flex-wrap:wrap;}
+.h-voice-score{font-family:"Shippori Mincho",serif;font-size:1.9rem;}
+.h-voice-stars{color:var(--h-accent);letter-spacing:.04em;}
+.h-voice-link{font-size:.78rem;color:var(--h-muted);border-bottom:1px solid var(--h-line);}
+.h-voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+.h-voice-quote p{font-family:"Shippori Mincho",serif;font-size:1.08rem;line-height:1.95;color:var(--h-ink);margin:0 0 14px;}
+.h-voice-quote p::before{content:"“";color:var(--h-accent);}
+.h-voice-quote p::after{content:"”";color:var(--h-accent);}
+.h-voice-author{font-size:.76rem;color:var(--h-muted);letter-spacing:.03em;}
+.h-access-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;}
+.h-info-table{width:100%;border-collapse:collapse;}
+.h-info-table tr{border-bottom:1px solid var(--h-line);}
+.h-info-table tr:first-child{border-top:1px solid var(--h-line);}
+.h-info-table th,.h-info-table td{text-align:left;padding:14px 0;font-weight:400;font-size:.9rem;vertical-align:top;}
+.h-info-table th{color:var(--h-muted);width:96px;letter-spacing:.03em;}
+.h-hours-table{width:100%;border-collapse:collapse;margin-top:24px;}
+.h-hours-table td{padding:8px 0;font-size:.88rem;border-bottom:1px solid var(--h-line);}
+.h-hours-table td.h-closed{color:var(--h-muted);}
+.h-hours-table tr:first-child td{border-top:1px solid var(--h-line);}
+.h-note{color:var(--h-muted);font-size:.78rem;margin-top:16px;}
+.h-map-embed{position:relative;width:100%;min-height:320px;border:1px solid var(--h-line);}
+.h-map-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+footer{border-top:1px solid var(--h-line);padding-block:36px;}
+.h-foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.h-foot-brand{font-family:"Shippori Mincho",serif;letter-spacing:.1em;}
+.h-foot-meta{color:var(--h-muted);font-size:.76rem;}
+@media (max-width:860px){.h-about-grid,.h-access-grid{grid-template-columns:1fr;gap:30px;}.h-blog-grid{grid-template-columns:1fr;gap:28px;}.h-voice-grid{grid-template-columns:1fr;gap:28px;}section.h-gutter{padding-block:52px;}.h-nav-links{gap:14px;}}
+@media (max-width:520px){.h-hero-media{aspect-ratio:3/4;}}
+</style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-row">
-    <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.png" alt="olino"></a>
-    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
-    <label for="nav-toggle" class="nav-toggle-btn" aria-label="メニューを開く">&#9776;</label>
-    <div class="nav-links">
-      <a href="index.html#staff">スタイリスト一覧</a>
-      <a href="styles.html">スタイル一覧</a>
-      <a href="price.html">料金</a>
-      <a href="index.html#store">店舗情報</a>
-      <a href="faq.html">よくある質問</a>
-    </div>
-    <a class="nav-cta" href="https://x9wzae.b-merit.jp/kyx5u7/web/login" target="_blank" rel="noopener">ご予約はこちら</a>
+<nav class="h-nav">
+  <div class="h-wrap h-nav-row">
+    <a class="h-brand" href="#top"><img src="assets/img/logo.png" alt="olino"><span>olino</span></a>
+    <ul class="h-nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#staff">staff</a></li>
+      <li><a href="styles.html">style</a></li>
+      <li><a href="#blog">blog</a></li>
+      <li><a href="price.html">menu</a></li>
+      <li><a href="faq.html">faq</a></li>
+      <li><a href="#store">access</a></li>
+    </ul>
+    <a class="h-nav-cta" href="https://x9wzae.b-merit.jp/kyx5u7/web/login" target="_blank" rel="noopener">ご予約はこちら</a>
   </div>
 </nav>
 
 <div id="top"></div>
-
-<header class="wrap hero">
-  <div>
-    <span class="eyebrow">OSAKA HIGASHISUMIYOSHI</span>
-    <h1 class="name">ハイトーン・縮毛矯正・髪質改善専門<br>美容室 olino</h1>
-    <p class="bio">大阪市東住吉区・南田辺、西田辺エリアの美容室。3名のスタイリストがそれぞれの得意分野で、髪のお悩みやなりたいイメージに合わせた施術をご提案しています。</p>
-    <div class="hero-actions">
-      <a class="btn-primary" href="https://x9wzae.b-merit.jp/kyx5u7/web/login" target="_blank" rel="noopener">ご予約はこちら</a>
-      <a class="btn-ghost" href="#staff">スタイリストを見る</a>
+<header class="h-hero">
+  <img class="h-hero-media" src="assets/img/store-exterior.jpg" alt="olino 店舗外観(大阪市東住吉区南田辺)">
+  <div class="h-hero-scrim"></div>
+  <div class="h-hero-copy h-gutter">
+    <div class="h-wrap">
+      <span class="h-eyebrow">OSAKA HIGASHISUMIYOSHI — MINAMITANABE</span>
+      <h1>ハイトーン・縮毛矯正・髪質改善専門<br>美容室 olino</h1>
     </div>
-  </div>
-  <div class="hero-photo-grid">
-    <figure><img src="assets/img/store-exterior.jpg" alt="olino 店舗外観(大阪市東住吉区南田辺)" loading="lazy" width="1600" height="1200"></figure>
-    <figure><img src="assets/img/store-interior.jpg" alt="olino 店内の様子" loading="lazy" width="1400" height="1050"></figure>
   </div>
 </header>
-
-<section class="wrap" id="staff" style="padding-top:0;">
-  <div class="staff-grid">
-        <a class="staff-card" href="takasu/index.html">
-      <div class="staff-card-photo"><img src="assets/img/takasu-thumb.jpg" alt="olino 高巣直哉（店長）のプロフィール写真" loading="lazy" width="333" height="500"></div>
-      <h3>高巣直哉</h3>
-      <p>店長 / ハイトーン・メンズカット・パーマ特化</p>
-      <p class="staff-card-intro">外国人風カラーとメンズカットが得意。骨格や肌色を見ながら、なりたいイメージをじっくり相談して決めます。</p>
-    </a>
-        <a class="staff-card" href="kaori/index.html">
-      <div class="staff-card-photo"><img src="assets/img/kaori-thumb.jpg" alt="olino KAORI（スタイリスト）のプロフィール写真" loading="lazy" width="333" height="500"></div>
-      <h3>KAORI</h3>
-      <p>スタイリスト / 縮毛矯正・髪質改善特化</p>
-      <p class="staff-card-intro">縮毛矯正と髪質改善が専門。くせやうねりのお悩みに合わせて、薬剤やアイロンの温度を都度調整します。</p>
-    </a>
-        <a class="staff-card" href="sasara/index.html">
-      <div class="staff-card-photo"><img src="assets/img/sasara-thumb.jpg" alt="olino SASARA（美容師）のプロフィール写真" loading="lazy" width="333" height="500"></div>
-      <h3>SASARA</h3>
-      <p>美容師 / ヘアアレンジ・カラー特化</p>
-      <p class="staff-card-intro">ヘアアレンジとトレンドカラーが得意。お出かけ前や特別な日のアレンジも気軽に相談できます。</p>
-    </a>
-  </div>
-</section>
-
-<section class="wrap reveal" id="reviews">
-  <div class="section-head">
-    <span class="eyebrow">REVIEWS</span>
-    <h2>お客様の声</h2>
-    <p>Googleマップに実際に届いたクチコミから、一部をご紹介します。</p>
-  </div>
-
-  <div class="reviews-badge">
-    <span class="reviews-score">4.6</span>
-    <span class="reviews-stars" aria-hidden="true">★★★★★</span>
-    <a class="reviews-count" href="https://www.google.com/maps/place/olino+%E8%A5%BF%E7%94%B0%E8%BE%BA%2F%E9%98%BF%E5%80%8D%E9%87%8E+%E3%83%96%E3%83%AA%E3%83%BC%E3%83%81%2F%E9%AB%AA%E8%B3%AA%E6%94%B9%E5%96%84%2F%E7%99%BD%E9%AB%AA%E3%81%BC%E3%81%8B%E3%81%97%2F%E7%B8%AE%E6%AF%9B%E7%9F%AF%E6%AD%A3%2F%E3%83%80%E3%83%A1%E3%83%BC%E3%82%B8%E3%83%AC%E3%82%B9%E3%82%B5%E3%83%AD%E3%83%B3/@34.6211462,135.5225088,17z/data=!4m6!3m5!1s0x6000ddc9c173d9ff:0xf4201e22ee5c5a1d!8m2!3d34.6211462!4d135.5225088!16s%2Fg%2F11mn06j_kc" target="_blank" rel="noopener">Googleのクチコミ45件を見る &rarr;</a>
-  </div>
-
-  <div class="reviews-grid">
-    <div class="review-card">
-      <p class="review-quote">「毎回カラーがきれいです。モチもいい気がします。トリートメントがサラサラで、長持ちするのも良いところです。」</p>
-      <p class="review-author">Googleのクチコミより — 美月さん・1年前</p>
-    </div>
-    <div class="review-card">
-      <p class="review-quote">「何をしてもらっても満足する結果になります！特にカラーとカットはよく褒められます。」</p>
-      <p class="review-author">Googleのクチコミより — 1年前</p>
+<section id="about" class="h-gutter">
+  <div class="h-wrap">
+    <div class="h-section-head"><span class="h-section-num">01</span><h2>ABOUT</h2></div>
+    <div class="h-about-grid">
+      <img src="assets/img/store-interior.jpg" alt="olino 店内の様子">
+      <div class="h-about-text">
+        <p class="h-lead">外国人風ハイトーンカラーと、くせ・うねりを根本から見直す縮毛矯正・髪質改善。<br>一人ひとりの髪質と骨格に合わせて、仕上がりまでじっくり向き合います。</p>
+        <p>大阪メトロ御堂筋線 西田辺駅、JR阪和線 南田辺駅から徒歩圏内。南田辺の住宅街にひっそりと佇む、隠れ家のような美容室です。</p>
+      </div>
     </div>
   </div>
 </section>
-
-<section class="wrap reveal" id="store">
-  <div class="section-head">
-    <span class="eyebrow">STORE INFO</span>
-    <h2>ハイトーン・縮毛矯正・髪質改善専門 olino</h2>
-    <p>大阪市東住吉区、南田辺・西田辺エリアの美容室。ハイトーンカラーと縮毛矯正・髪質改善を軸に、一人ひとりの髪質に合わせた施術をご提案しています。</p>
-  </div>
-
-  <div class="store-gallery">
-    <figure class="store-photo store-photo-wide">
-      <img src="assets/img/store-exterior.jpg" alt="olino 店舗外観(大阪市東住吉区南田辺)" loading="lazy" width="1600" height="1200">
-    </figure>
-    <figure class="store-photo">
-      <img src="assets/img/store-interior.jpg" alt="olino 店内の様子" loading="lazy" width="1400" height="1050">
-    </figure>
-  </div>
-
-  <div class="store-grid">
-    <div class="card">
-      <h3>ACCESS &amp; CONTACT</h3>
-      <dl>
-        <div class="info-row"><dt>店名</dt><dd>olino(オリノ)</dd></div>
-        <div class="info-row"><dt>住所</dt><dd>〒546-0033<br>大阪府大阪市東住吉区南田辺1-10-39 1階</dd></div>
-        <div class="info-row"><dt>電話</dt><dd><a href="tel:0666249860">06-6624-9860</a></dd></div>
-        <div class="info-row"><dt>アクセス</dt><dd>大阪メトロ御堂筋線 西田辺駅 / JR阪和線 南田辺駅</dd></div>
-      </dl>
-      <div class="map-embed"><iframe src="https://www.google.com/maps?q=olino%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E6%9D%B1%E4%BD%8F%E5%90%89%E5%8C%BA%E5%8D%97%E7%94%B0%E8%BE%BA1-10-39&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="olinoの地図"></iframe></div>
-    </div>
-
-    <div class="card">
-      <h3>OPENING HOURS</h3>
-      <table class="hours">
-        <tr><td>火・金・土</td><td>9:00 - 22:00</td></tr>
-        <tr><td>水・木・日</td><td>9:00 - 18:00</td></tr>
-        <tr><td>月曜日</td><td class="closed">定休日</td></tr>
-        <tr><td>第3火曜日</td><td class="closed">定休日</td></tr>
-      </table>
-      <p class="note">※ 火曜日は第3週のみお休みです。ご予約は下記の予約ページより承っています。</p>
+<section id="staff" class="h-bg-alt h-gutter">
+  <div class="h-wrap">
+    <div class="h-section-head"><span class="h-section-num">02</span><h2>STAFF</h2></div>
+    <div class="h-staff-grid">
+      <a class="staff-card" href="takasu/index.html">
+        <div class="photo"><img src="assets/img/takasu-portrait.jpg" alt="高巣直哉" loading="lazy"></div>
+        <span class="staff-num">01 ／ 店長</span>
+        <h3 class="staff-name">高巣直哉</h3>
+        <p class="staff-tag">ハイトーン・メンズカット</p>
+        <span class="staff-link">プロフィールを見る →</span>
+      </a>
+      <a class="staff-card" href="kaori/index.html">
+        <div class="photo"><img src="assets/img/kaori-portrait.jpg" alt="KAORI" loading="lazy"></div>
+        <span class="staff-num">02 ／ スタイリスト</span>
+        <h3 class="staff-name">KAORI</h3>
+        <p class="staff-tag">縮毛矯正・髪質改善</p>
+        <span class="staff-link">プロフィールを見る →</span>
+      </a>
+      <a class="staff-card" href="sasara/index.html">
+        <div class="photo"><img src="assets/img/sasara-portrait.jpg" alt="SASARA" loading="lazy"></div>
+        <span class="staff-num">03 ／ 美容師</span>
+        <h3 class="staff-name">SASARA</h3>
+        <p class="staff-tag">ヘアアレンジ・カラー</p>
+        <span class="staff-link">プロフィールを見る →</span>
+      </a>
     </div>
   </div>
 </section>
-
-<footer>
-  <div class="wrap foot-row">
-    <span>&copy; olino — 大阪市東住吉区南田辺1-10-39</span>
-    <span>olino</span>
+<section id="blog" class="h-gutter">
+  <div class="h-wrap">
+    <div class="h-section-head"><span class="h-section-num">03</span><h2>BLOG</h2></div>
+    <div class="h-blog-grid">
+      <a class="blog-card" href="takasu/posts/2026-10-19-takasu-5b56a3.html">
+        <img src="takasu/posts/img/2026-10-19-takasu-5b56a3.jpg" alt="一回のブリーチでも、思った以上にきれいなベージュに仕上がりました" loading="lazy">
+        <div class="blog-meta"><span>2026.10.19</span><span class="staff-chip">高巣直哉</span></div>
+        <div class="blog-title">一回のブリーチでも、思った以上にきれいなベージュに仕上がりました</div>
+      </a>
+      <a class="blog-card" href="sasara/posts/2026-10-19-sasara-476ff0.html">
+        <img src="sasara/posts/img/2026-10-19-sasara-476ff0.jpg" alt="ライブ前にお願いされたツインお団子、ベロアリボンで可愛く仕上げました" loading="lazy">
+        <div class="blog-meta"><span>2026.10.19</span><span class="staff-chip">SASARA</span></div>
+        <div class="blog-title">ライブ前にお願いされたツインお団子、ベロアリボンで可愛く仕上げました</div>
+      </a>
+      <a class="blog-card" href="takasu/posts/2026-10-18-takasu-e1096b.html">
+        <img src="takasu/posts/img/2026-10-18-takasu-e1096b.jpg" alt="セルフブリーチのムラ直しからシルバーに仕上げました" loading="lazy">
+        <div class="blog-meta"><span>2026.10.18</span><span class="staff-chip">高巣直哉</span></div>
+        <div class="blog-title">セルフブリーチのムラ直しからシルバーに仕上げました</div>
+      </a>
+    </div>
+    <a class="h-blog-more" href="#staff">スタイリスト別の記事をもっと見る →</a>
+  </div>
+</section>
+<section id="voice" class="h-bg-alt h-gutter">
+  <div class="h-wrap">
+    <div class="h-section-head"><span class="h-section-num">04</span><h2>VOICE</h2></div>
+    <div class="h-voice-top">
+      <span class="h-voice-score">4.6</span>
+      <span class="h-voice-stars" aria-hidden="true">★★★★★</span>
+      <a class="h-voice-link" href="https://www.google.com/maps/place/olino+%E8%A5%BF%E7%94%B0%E8%BE%BA%2F%E9%98%BF%E5%80%8D%E9%87%8E+%E3%83%96%E3%83%AA%E3%83%BC%E3%83%81%2F%E9%AB%AA%E8%B3%AA%E6%94%B9%E5%96%84%2F%E7%99%BD%E9%AB%AA%E3%81%BC%E3%81%8B%E3%81%97%2F%E7%B8%AE%E6%AF%9B%E7%9F%AF%E6%AD%A3%2F%E3%83%80%E3%83%A1%E3%83%BC%E3%82%B8%E3%83%AC%E3%82%B9%E3%82%B5%E3%83%AD%E3%83%B3/@34.6211462,135.5225088,17z/data=!4m6!3m5!1s0x6000ddc9c173d9ff:0xf4201e22ee5c5a1d!8m2!3d34.6211462!4d135.5225088!16s%2Fg%2F11mn06j_kc" target="_blank" rel="noopener">Googleのクチコミ45件を見る →</a>
+    </div>
+    <div class="h-voice-grid">
+      <div class="h-voice-quote">
+        <p>毎回カラーがきれいです。モチもいい気がします。トリートメントがサラサラで、長持ちするのも良いところです。</p>
+        <div class="h-voice-author">Googleのクチコミより — 美月さん・1年前</div>
+      </div>
+      <div class="h-voice-quote">
+        <p>何をしてもらっても満足する結果になります！特にカラーとカットはよく褒められます。</p>
+        <div class="h-voice-author">Googleのクチコミより — 1年前</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="store" class="h-gutter">
+  <div class="h-wrap">
+    <div class="h-section-head"><span class="h-section-num">05</span><h2>ACCESS</h2></div>
+    <div class="h-access-grid">
+      <div>
+        <table class="h-info-table">
+          <tr><th>店名</th><td>olino(オリノ)</td></tr>
+          <tr><th>住所</th><td>〒546-0033<br>大阪府大阪市東住吉区南田辺1-10-39 1階</td></tr>
+          <tr><th>電話</th><td><a href="tel:0666249860">06-6624-9860</a></td></tr>
+          <tr><th>アクセス</th><td>大阪メトロ御堂筋線 西田辺駅 / JR阪和線 南田辺駅</td></tr>
+        </table>
+        <table class="h-hours-table">
+          <tr><td>火・金・土</td><td>9:00 - 22:00</td></tr>
+          <tr><td>水・木・日</td><td>9:00 - 18:00</td></tr>
+          <tr><td>月曜日</td><td class="h-closed">定休日</td></tr>
+          <tr><td>第3火曜日</td><td class="h-closed">定休日</td></tr>
+        </table>
+        <p class="h-note">※ 火曜日は第3週のみお休みです。ご予約は下記の予約ページより承っています。</p>
+      </div>
+      <div class="h-map-embed"><iframe src="https://www.google.com/maps?q=olino%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E6%9D%B1%E4%BD%8F%E5%90%89%E5%8C%BA%E5%8D%97%E7%94%B0%E8%BE%BA1-10-39&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="olinoの地図"></iframe></div>
+    </div>
+  </div>
+</section>
+<footer class="h-gutter">
+  <div class="h-wrap h-foot-row">
+    <span class="h-foot-brand">olino</span>
+    <span class="h-foot-meta">大阪市東住吉区南田辺1-10-39 ／ 06-6624-9860</span>
   </div>
 </footer>
 </body>
