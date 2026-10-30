@@ -231,3 +231,11 @@ footer{border-top:1px solid var(--line);padding:32px 0 48px;}
 .price-desc{display:block;font-size:0.8rem;color:var(--muted);margin-top:4px;line-height:1.6;}
 .price-amount{text-align:right;white-space:nowrap;font-weight:800;color:var(--gold-deep);font-size:1rem;padding-left:16px;}
 .price-source-note{margin-top:8px;}
+
+/* ===== 2026-10-30 よくある質問ページ 追加分 ===== */
+.faq-list{display:flex;flex-direction:column;gap:18px;}
+.faq-item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;}
+.faq-q{margin:0 0 10px;font-weight:700;font-family:"Shippori Mincho",serif;font-size:1.02rem;}
+.faq-q::before{content:"Q. ";color:var(--gold-deep);}
+.faq-a{margin:0;color:var(--muted);line-height:1.8;}
+.faq-a::before{content:"A. ";color:var(--gold-deep);font-weight:700;}
