@@ -219,3 +219,15 @@ footer{border-top:1px solid var(--line);padding:32px 0 48px;}
 .review-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;}
 .review-quote{margin:0 0 14px;line-height:1.8;}
 .review-author{margin:0;font-size:0.82rem;color:var(--muted);font-weight:700;}
+
+/* ===== 2026-10-30 料金ページ 追加分 ===== */
+.price-groups{display:flex;flex-direction:column;gap:40px;margin-bottom:28px;}
+.price-group h3{font-family:"Shippori Mincho",serif;font-size:1.05rem;margin:0 0 14px;color:var(--gold-deep);}
+.price-table{width:100%;border-collapse:collapse;}
+.price-table tr{border-bottom:1px dashed var(--line);}
+.price-table tr:last-child{border-bottom:none;}
+.price-table td{padding:14px 4px;vertical-align:top;}
+.price-name{display:block;font-weight:700;font-size:0.96rem;}
+.price-desc{display:block;font-size:0.8rem;color:var(--muted);margin-top:4px;line-height:1.6;}
+.price-amount{text-align:right;white-space:nowrap;font-weight:800;color:var(--gold-deep);font-size:1rem;padding-left:16px;}
+.price-source-note{margin-top:8px;}
