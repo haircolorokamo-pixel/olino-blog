@@ -95,6 +95,102 @@ footer{border-top:1px solid var(--h-line);padding-block:36px;}
 .h-foot-meta{color:var(--h-muted);font-size:.76rem;}
 @media (max-width:860px){.h-about-grid,.h-access-grid{grid-template-columns:1fr;gap:30px;}.h-blog-grid{grid-template-columns:1fr;gap:28px;}.h-voice-grid{grid-template-columns:1fr;gap:28px;}section.h-gutter{padding-block:52px;}.h-nav-links{gap:14px;}}
 @media (max-width:520px){.h-hero-media{aspect-ratio:3/4;}}
+.h-staff-hero{position:relative;}
+.h-staff-hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:start;padding-block:56px;}
+.h-staff-hero .role{color:var(--h-accent);font-size:.92rem;letter-spacing:.03em;margin:8px 0 18px;}
+.h-staff-hero .role span{color:var(--h-muted);}
+.h-staff-hero .bio{color:var(--h-muted);line-height:2;font-size:.95rem;max-width:52ch;margin:0 0 22px;}
+.h-hero-actions{margin-bottom:28px;}
+.h-portrait{position:relative;}
+.h-portrait img{width:100%;aspect-ratio:3/4;object-fit:cover;}
+.h-portrait-tag{display:flex;justify-content:space-between;font-size:.72rem;color:var(--h-muted);letter-spacing:.04em;margin-top:10px;}
+.hero-recent-label{font-size:.78rem;color:var(--h-muted);letter-spacing:.06em;margin:0 0 10px;}
+.hero-recent{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.hero-recent img{width:100%;aspect-ratio:1/1;object-fit:cover;}
+.blog-list{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.post-card{display:block;}
+.post-card .thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;margin-bottom:14px;}
+.post-card .post-meta{display:flex;gap:10px;align-items:baseline;font-size:.7rem;color:var(--h-muted);letter-spacing:.02em;margin-bottom:6px;}
+.post-card .post-tag{color:var(--h-accent);}
+.post-card h3{font-size:.94rem;line-height:1.55;margin:0 0 8px;font-weight:700;}
+.post-card .excerpt{color:var(--h-muted);font-size:.84rem;line-height:1.7;margin:0 0 10px;}
+.post-card .read-more{font-size:.74rem;letter-spacing:.04em;border-bottom:1px solid var(--h-ink);padding-bottom:1px;}
+.post-card:hover .read-more{color:var(--h-accent);border-color:var(--h-accent);}
+.store-gallery{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:40px;}
+.store-photo img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;}
+.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;}
+.h-dl .info-row{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--h-line);font-size:.9rem;}
+.h-dl .info-row:first-child{border-top:1px solid var(--h-line);}
+.h-dl dt{width:72px;flex:0 0 auto;color:var(--h-muted);letter-spacing:.03em;}
+.h-dl dd{margin:0;}
+.hours{width:100%;border-collapse:collapse;}
+.hours td{padding:8px 0;font-size:.88rem;border-bottom:1px solid var(--h-line);}
+.hours tr:first-child td{border-top:1px solid var(--h-line);}
+.hours td.closed{color:var(--h-muted);}
+.note{color:var(--h-muted);font-size:.78rem;margin-top:16px;}
+.h-card-title{font-family:"Shippori Mincho",serif;font-size:.86rem;letter-spacing:.1em;color:var(--h-muted);margin:0 0 18px;}
+.h-back-link{display:inline-block;font-size:.8rem;color:var(--h-muted);margin-bottom:28px;}
+.h-back-link:hover{color:var(--h-accent);}
+.post-full .post-meta{display:flex;gap:12px;align-items:baseline;font-size:.78rem;color:var(--h-muted);margin-bottom:14px;}
+.post-full .post-tag{color:var(--h-accent);}
+.post-full h1{font-size:clamp(1.3rem,3.6vw,1.9rem);line-height:1.5;margin-bottom:26px;}
+.post-body p{color:var(--h-ink);line-height:2.1;font-size:.98rem;margin:0 0 22px;}
+.post-cta{background:var(--h-bg-alt);border:1px solid var(--h-line);padding:26px 28px;margin:40px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.post-cta-info{margin:0;color:var(--h-muted);font-size:.86rem;max-width:40ch;}
+.btn-primary{display:inline-block;background:var(--h-ink);color:var(--h-bg);font-size:.82rem;letter-spacing:.04em;padding:12px 26px;}
+.btn-primary:hover{background:var(--h-accent);}
+.btn-sm{padding:10px 20px;font-size:.78rem;}
+.related-posts{margin-top:52px;padding-top:40px;border-top:1px solid var(--h-line);}
+.related-posts h3{font-size:1.02rem;margin-bottom:22px;}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.related-card{display:block;}
+.related-card .thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;margin-bottom:10px;}
+.related-card h4{font-size:.84rem;line-height:1.5;font-weight:700;margin:0;}
+.related-card:hover h4{color:var(--h-accent);}
+.h-page-hero{padding-block:52px 10px;}
+.h-page-hero .h-eyebrow{display:block;margin-bottom:10px;}
+.h-page-hero h1{font-size:clamp(1.4rem,3.6vw,2rem);margin-bottom:14px;}
+.h-page-hero p{color:var(--h-muted);line-height:1.9;font-size:.92rem;max-width:62ch;margin:0;}
+.h-length-nav{margin-top:18px;font-size:.82rem;color:var(--h-muted);}
+.h-length-nav a{border-bottom:1px solid var(--h-line);}
+.h-length-nav a:hover{color:var(--h-accent);border-color:var(--h-accent);}
+.h-length-nav strong{color:var(--h-ink);font-weight:700;}
+.length-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+.length-card{display:block;}
+.length-card-photo img{width:100%;aspect-ratio:3/4;object-fit:cover;margin-bottom:14px;}
+.length-card-body h3{font-size:1rem;margin:0 0 4px;}
+.length-card-body p{color:var(--h-muted);font-size:.82rem;margin:0;}
+.length-card:hover .length-card-body h3{color:var(--h-accent);}
+.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+.style-card{display:block;}
+.style-card-photo img{width:100%;aspect-ratio:3/4;object-fit:cover;margin-bottom:14px;}
+.style-card-body .post-tag{display:inline-block;font-size:.68rem;letter-spacing:.06em;color:var(--h-accent);margin-bottom:6px;}
+.style-card-body h3{font-size:.94rem;margin:0 0 4px;}
+.style-card-body p{color:var(--h-muted);font-size:.8rem;margin:0;}
+.style-card:hover .style-card-body h3{color:var(--h-accent);}
+.price-groups{display:flex;flex-direction:column;gap:48px;}
+.price-group h3{font-family:"Shippori Mincho",serif;font-size:1rem;letter-spacing:.04em;margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--h-line);}
+.price-table{width:100%;border-collapse:collapse;}
+.price-table tr{border-bottom:1px solid var(--h-line);}
+.price-table td{padding:13px 0;vertical-align:top;}
+.price-name{display:block;font-size:.92rem;}
+.price-desc{display:block;color:var(--h-muted);font-size:.78rem;margin-top:3px;}
+.price-amount{text-align:right;white-space:nowrap;font-size:.92rem;font-variant-numeric:tabular-nums;}
+.price-source-note{color:var(--h-muted);font-size:.78rem;margin-top:28px;}
+.price-source-note a{border-bottom:1px solid var(--h-line);}
+.faq-list{display:flex;flex-direction:column;gap:16px;}
+.faq-item{background:var(--h-bg-alt);border:1px solid var(--h-line);padding:22px 26px;}
+.faq-q{margin:0 0 10px;font-weight:700;font-family:"Shippori Mincho",serif;font-size:1rem;}
+.faq-q::before{content:"Q. ";color:var(--h-accent);}
+.faq-a{margin:0;color:var(--h-muted);line-height:1.8;}
+.faq-a::before{content:"A. ";color:var(--h-accent);font-weight:700;}
+.h-cta-band{background:var(--h-bg-alt);text-align:center;}
+.h-cta-band h2{font-size:1.2rem;margin-bottom:8px;}
+.h-cta-band p{color:var(--h-muted);font-size:.86rem;margin:0 0 22px;}
+.h-cta-btn{display:inline-block;background:var(--h-ink);color:var(--h-bg);font-size:.84rem;letter-spacing:.05em;padding:13px 32px;}
+.h-cta-btn:hover{background:var(--h-accent);}
+@media (max-width:860px){.h-staff-hero-grid{grid-template-columns:1fr;gap:26px;}.blog-list,.related-grid,.length-grid,.style-grid{grid-template-columns:1fr 1fr;}.store-grid,.store-gallery{grid-template-columns:1fr;gap:24px;}}
+@media (max-width:520px){.hero-recent{grid-template-columns:repeat(3,1fr);}.blog-list,.related-grid,.length-grid,.style-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -169,6 +265,11 @@ footer{border-top:1px solid var(--h-line);padding-block:36px;}
   <div class="h-wrap">
     <div class="h-section-head"><span class="h-section-num">03</span><h2>BLOG</h2></div>
     <div class="h-blog-grid">
+      <a class="blog-card" href="takasu/posts/2026-10-31-takasu-579e36.html">
+        <img src="takasu/posts/img/2026-10-31-takasu-579e36.jpg" alt="サイドすっきり、トップはしっかりツイストで欲張りに" loading="lazy">
+        <div class="blog-meta"><span>2026.10.31</span><span class="staff-chip">高巣直哉</span></div>
+        <div class="blog-title">サイドすっきり、トップはしっかりツイストで欲張りに</div>
+      </a>
       <a class="blog-card" href="takasu/posts/2026-10-19-takasu-5b56a3.html">
         <img src="takasu/posts/img/2026-10-19-takasu-5b56a3.jpg" alt="一回のブリーチでも、思った以上にきれいなベージュに仕上がりました" loading="lazy">
         <div class="blog-meta"><span>2026.10.19</span><span class="staff-chip">高巣直哉</span></div>
@@ -178,11 +279,6 @@ footer{border-top:1px solid var(--h-line);padding-block:36px;}
         <img src="sasara/posts/img/2026-10-19-sasara-476ff0.jpg" alt="ライブ前にお願いされたツインお団子、ベロアリボンで可愛く仕上げました" loading="lazy">
         <div class="blog-meta"><span>2026.10.19</span><span class="staff-chip">SASARA</span></div>
         <div class="blog-title">ライブ前にお願いされたツインお団子、ベロアリボンで可愛く仕上げました</div>
-      </a>
-      <a class="blog-card" href="takasu/posts/2026-10-18-takasu-e1096b.html">
-        <img src="takasu/posts/img/2026-10-18-takasu-e1096b.jpg" alt="セルフブリーチのムラ直しからシルバーに仕上げました" loading="lazy">
-        <div class="blog-meta"><span>2026.10.18</span><span class="staff-chip">高巣直哉</span></div>
-        <div class="blog-title">セルフブリーチのムラ直しからシルバーに仕上げました</div>
       </a>
     </div>
     <a class="h-blog-more" href="#staff">スタイリスト別の記事をもっと見る →</a>
